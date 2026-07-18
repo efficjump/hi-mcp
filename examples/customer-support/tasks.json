@@ -1,0 +1,23 @@
+[
+  {
+    "id": "find-customer-by-email",
+    "prompt": "Find the customer whose email is alex@example.com.",
+    "expectedOperationId": "searchCustomers",
+    "expectedArguments": {
+      "query": "alex@example.com"
+    }
+  },
+  {
+    "id": "create-high-priority-ticket",
+    "prompt": "Create a high priority support ticket for customer cus_123 about a failed payment.",
+    "expectedOperationId": "createTicket",
+    "expectedArguments": {
+      "body": {
+        "customerId": "cus_123",
+        "subject": "Failed payment",
+        "description": "The customer reported a failed payment.",
+        "priority": "high"
+      }
+    }
+  }
+]

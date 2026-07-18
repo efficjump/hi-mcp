@@ -1,0 +1,151 @@
+openapi: 3.1.0
+info:
+  title: Customer Support API
+  version: 1.0.0
+  description: Example API used to verify HiMCP compilation and execution.
+servers:
+  - url: https://api.example.com/v1
+security:
+  - bearerAuth: []
+paths:
+  /customers:
+    get:
+      operationId: searchCustomers
+      summary: Search customers
+      description: Finds customers by email address or display name.
+      parameters:
+        - name: query
+          in: query
+          required: true
+          description: Email address or display name to search for.
+          schema:
+            type: string
+            minLength: 1
+        - name: limit
+          in: query
+          description: Maximum number of customers to return.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        '200':
+          description: Matching customers.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Customer'
+  /customers/{customerId}:
+    get:
+      operationId: getCustomer
+      summary: Get a customer
+      description: Returns the customer and their current support status.
+      parameters:
+        - $ref: '#/components/parameters/CustomerId'
+      responses:
+        '200':
+          description: Customer details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '404':
+          description: Customer not found.
+  /tickets:
+    post:
+      operationId: createTicket
+      summary: Create a support ticket
+      description: Creates a support ticket for an existing customer.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTicketRequest'
+      responses:
+        '201':
+          description: Ticket created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ticket'
+  /tickets/{ticketId}:
+    delete:
+      operationId: deleteTicket
+      summary: Delete a support ticket
+      description: Permanently removes a support ticket.
+      parameters:
+        - name: ticketId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Ticket deleted.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    CustomerId:
+      name: customerId
+      in: path
+      required: true
+      description: Stable customer identifier.
+      schema:
+        type: string
+  schemas:
+    Customer:
+      type: object
+      required: [id, displayName, email]
+      properties:
+        id:
+          type: string
+        displayName:
+          type: string
+        email:
+          type: string
+          format: email
+        supportStatus:
+          type: string
+          enum: [active, paused]
+    CreateTicketRequest:
+      type: object
+      additionalProperties: false
+      required: [customerId, subject, description]
+      properties:
+        customerId:
+          type: string
+        subject:
+          type: string
+          minLength: 1
+        description:
+          type: string
+          minLength: 1
+        priority:
+          type: string
+          enum: [low, normal, high]
+          default: normal
+    Ticket:
+      type: object
+      required: [id, customerId, subject, status]
+      properties:
+        id:
+          type: string
+        customerId:
+          type: string
+        subject:
+          type: string
+        status:
+          type: string
+          enum: [open, pending, resolved]

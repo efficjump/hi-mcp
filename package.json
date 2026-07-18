@@ -1,0 +1,48 @@
+{
+  "name": "hi-mcp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Compile API contracts into verified, agent-ready MCP capabilities.",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/efficjump/hi-mcp.git"
+  },
+  "homepage": "https://github.com/efficjump/hi-mcp#readme",
+  "bugs": {
+    "url": "https://github.com/efficjump/hi-mcp/issues"
+  },
+  "keywords": [
+    "mcp",
+    "openapi",
+    "api",
+    "model-context-protocol",
+    "typescript"
+  ],
+  "packageManager": "pnpm@11.7.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "test:coverage": "turbo run test:coverage",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "web": "pnpm --filter @hi-mcp/web start",
+    "web:dev": "pnpm --filter @hi-mcp/web dev",
+    "himcp": "node apps/cli/dist/bin.js",
+    "clean": "turbo run clean && rm -rf .turbo coverage"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.1",
+    "@vitest/coverage-v8": "^4.1.10",
+    "prettier": "^3.6.2",
+    "tsup": "^8.5.1",
+    "turbo": "^2.5.5",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.10"
+  }
+}

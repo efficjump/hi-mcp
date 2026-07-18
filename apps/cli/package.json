@@ -1,0 +1,48 @@
+{
+  "name": "@hi-mcp/cli",
+  "version": "0.1.0",
+  "description": "Analyze, compile, and verify agent-ready MCP capabilities from API contracts.",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "bin": {
+    "himcp": "./dist/bin.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup src/index.ts src/bin.ts --format esm --sourcemap --clean --target node22 && tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "clean": "rm -rf dist coverage"
+  },
+  "dependencies": {
+    "@hi-mcp/capability-ir": "workspace:*",
+    "@hi-mcp/deterministic-verifier": "workspace:*",
+    "@hi-mcp/execution-engine": "workspace:*",
+    "@hi-mcp/http-manifest-adapter": "workspace:*",
+    "@hi-mcp/openapi-adapter": "workspace:*",
+    "@hi-mcp/runtime": "workspace:*",
+    "@hi-mcp/semantic-compiler": "workspace:*",
+    "@hi-mcp/source-adapter-core": "workspace:*",
+    "commander": "^15.0.0",
+    "yaml": "^2.9.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.1",
+    "tsup": "^8.5.1",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.10"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "Apache-2.0"
+}

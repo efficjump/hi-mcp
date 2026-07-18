@@ -1,0 +1,13 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "../../..",
+    "outDir": "dist",
+    "types": ["node", "vitest/globals"],
+    "paths": {
+      "@hi-mcp/capability-ir": ["../../capability-ir/src/index.ts"],
+      "@hi-mcp/source-adapter-core": ["../core/src/index.ts"]
+    }
+  },
+  "include": ["src/**/*.ts", "test/**/*.ts", "tsup.config.ts", "vitest.config.ts"]
+}

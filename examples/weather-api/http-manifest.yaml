@@ -1,0 +1,82 @@
+schemaVersion: '1.0'
+kind: http
+id: weather-api
+title: Weather API without OpenAPI
+version: '2026-07'
+description: Example of registering an HTTP API from a declarative contract alone.
+
+servers:
+  - url: https://weather.example.com/v1
+
+securitySchemes:
+  weatherKey:
+    type: apiKey
+    description: Supplied at runtime from the environment-bound credential broker.
+    location: header
+    parameterName: X-Weather-Key
+
+security:
+  - - scheme: weatherKey
+      scopes: []
+
+operations:
+  - id: getCurrentWeather
+    method: GET
+    path: /weather/{city}
+    summary: Get current weather
+    description: Returns current conditions for a city.
+    tags: [weather, read]
+    parameters:
+      - in: path
+        name: city
+        description: City name.
+        schema:
+          type: string
+          minLength: 1
+      - in: query
+        name: units
+        description: Unit system for temperature and wind speed.
+        schema:
+          type: string
+          enum: [metric, imperial]
+    successResponses:
+      - statusCode: '200'
+        contentType: application/json
+        schema:
+          type: object
+          required: [city, temperature]
+          properties:
+            city:
+              type: string
+            temperature:
+              type: number
+            conditions:
+              type: string
+
+  - id: createWeatherAlert
+    method: POST
+    path: /alerts
+    summary: Create a weather alert
+    description: Creates an alert subscription and therefore requires confirmation.
+    tags: [weather, write]
+    requestBodies:
+      - contentType: application/json
+        required: true
+        schema:
+          type: object
+          additionalProperties: false
+          required: [city, threshold]
+          properties:
+            city:
+              type: string
+            threshold:
+              type: number
+    successResponses:
+      - statusCode: '201'
+        contentType: application/json
+        schema:
+          type: object
+          required: [id]
+          properties:
+            id:
+              type: string

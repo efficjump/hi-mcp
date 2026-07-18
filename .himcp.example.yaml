@@ -1,0 +1,66 @@
+# This file contains only compiler and optional semantic-provider settings accepted by the
+# strict configuration schema. Source adapter selection is a CLI concern:
+#   node apps/cli/dist/bin.js analyze <source> --source-type auto
+#   node apps/cli/dist/bin.js register <source> --source-type openapi
+#   node apps/cli/dist/bin.js register <source> --source-type http-manifest
+#
+# Runtime destinations and upstream credential values do not belong here. After compilation,
+# use `node apps/cli/dist/bin.js connection create ...` to write a separate profile containing
+# exact approved origins and environment-variable names only. Inject the corresponding values
+# into the MCP process with a secret-aware launcher, then use `connection export` or
+# `serve-profile`. Never add secret values to this file, a source, release, profile, or descriptor.
+
+compile:
+  strict: true
+  # Resolve relative server URLs from a selected source adapter against an explicit base.
+  # baseUrl: https://api.example.invalid
+
+semantic:
+  # This section is evaluated only when compile is invoked with --semantic and an explicit
+  # --config path.
+  # When false, failures retain baseline candidates and become warnings. Because compile.strict
+  # is true above, those warnings still block release creation until the failure is resolved.
+  required: false
+  # Bound each catalogue-discovery or per-capability generation stage. Provider adapters must also
+  # honor AbortSignal so their underlying network work is cancelled, not merely detached.
+  requestTimeoutMs: 60000
+  maxConcurrency: 4
+  maxOutputTokens: 1024
+  temperature: 0
+
+  providers:
+    - module: '@your-scope/himcp-semantic-provider'
+      export: createSemanticProvider
+      enabled: true
+      # Optional entry-file integrity check for an installed package. This does not attest its
+      # transitive dependency graph.
+      # integrity: sha256:<64-lowercase-hex-characters>
+      # A local absolute or config-relative path additionally requires this explicit opt-in.
+      # allowLocal: true
+      settings:
+        # These keys are interpreted only by the provider module.
+        providerId: team-model-gateway
+        catalogUrl: https://models.example.invalid/catalog
+        generationUrl: https://models.example.invalid/generate
+        apiKeyEnvironmentVariable: MODEL_GATEWAY_API_KEY
+
+  routing:
+    # Values must match capabilities returned by the dynamic provider catalogue.
+    requiredCapabilities:
+      - structured-output
+    # Omit qualityWeights to derive equal weights from every published quality dimension.
+    objectiveWeights:
+      quality: 4
+      cost: 2
+      latency: 1
+      availability: 3
+    missingMetricScore: 0.25
+    estimatedOutputTokens: 1024
+    charactersPerInputToken: 4
+    minimumAvailability: 0.9
+    # Optional allowlists and ceilings can narrow dynamically discovered models.
+    # allowedProviderIds: [team-model-gateway]
+    # allowedModelIds: [model-id-from-the-live-catalogue]
+    # minimumContextWindowTokens: 16000
+    # maximumObservedLatencyMs: 5000
+    # maximumEstimatedCost: 0.02
