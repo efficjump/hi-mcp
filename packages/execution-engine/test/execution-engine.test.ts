@@ -538,19 +538,32 @@ describe('HttpExecutionEngine', () => {
   });
 
   it('applies the total deadline to DNS and propagates an abort signal', async () => {
-    let resolverSignal: AbortSignal | undefined;
-    const resolveDns: DnsResolver = async (_hostname, context) => {
-      resolverSignal = context?.signal;
-      return new Promise<never>(() => undefined);
-    };
-    const fetch = vi.fn<FetchImplementation>();
-    const engine = new HttpExecutionEngine({ fetch, resolveDns });
+    vi.useFakeTimers();
+    try {
+      let resolverSignal: AbortSignal | undefined;
+      let markResolverStarted: (() => void) | undefined;
+      const resolverStarted = new Promise<void>((resolve) => {
+        markResolverStarted = resolve;
+      });
+      const resolveDns: DnsResolver = async (_hostname, context) => {
+        resolverSignal = context?.signal;
+        markResolverStarted?.();
+        return new Promise<never>(() => undefined);
+      };
+      const fetch = vi.fn<FetchImplementation>();
+      const engine = new HttpExecutionEngine({ fetch, resolveDns });
 
-    await expect(
-      engine.execute(capability(), {}, { policy: { totalTimeoutMs: 10 } }),
-    ).rejects.toMatchObject({ code: 'REQUEST_TIMEOUT' });
-    expect(resolverSignal?.aborted).toBe(true);
-    expect(fetch).not.toHaveBeenCalled();
+      const execution = engine.execute(capability(), {}, { policy: { totalTimeoutMs: 10 } });
+      const timeout = expect(execution).rejects.toMatchObject({ code: 'REQUEST_TIMEOUT' });
+      await resolverStarted;
+      await vi.advanceTimersByTimeAsync(10);
+
+      await timeout;
+      expect(resolverSignal?.aborted).toBe(true);
+      expect(fetch).not.toHaveBeenCalled();
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it('validates each compiled parameter schema even when the aggregate schema is permissive', async () => {
