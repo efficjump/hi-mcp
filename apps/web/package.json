@@ -20,7 +20,7 @@
     "@hi-mcp/capability-ir": "workspace:*",
     "@hi-mcp/cli": "workspace:*",
     "@hi-mcp/deterministic-verifier": "workspace:*",
-    "lucide-react": "1.24.0",
+    "lucide-react": "1.25.0",
     "react": "19.2.7",
     "react-dom": "19.2.7",
     "zod": "^4.4.3"
