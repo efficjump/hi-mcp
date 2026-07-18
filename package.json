@@ -27,8 +27,8 @@
   "scripts": {
     "build": "turbo run build",
     "typecheck": "turbo run typecheck",
-    "test": "turbo run test",
-    "test:coverage": "turbo run test:coverage",
+    "test": "turbo run test --concurrency=1",
+    "test:coverage": "turbo run test:coverage --concurrency=1",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "web": "pnpm --filter @hi-mcp/web start",
