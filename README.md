@@ -1,3 +1,5 @@
+**English** | [한국어](README.ko.md)
+
 # HiMCP
 
 [![CI](https://github.com/efficjump/hi-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/efficjump/hi-mcp/actions/workflows/ci.yml)
