@@ -57,15 +57,15 @@ flowchart LR
 
 ## 지원 범위
 
-| 영역 | 현재 지원 |
-| --- | --- |
-| API 소스 | OpenAPI 3.x, 선언형 HiMCP HTTP 매니페스트 |
-| 실행 | 검증된 요청·응답 계약을 가진, 검토된 HTTP(S) 작업 |
-| MCP 전송 | 로컬 stdio |
-| 자격 증명 | 환경 변수 기반 API 키, Basic/Bearer 정보, 기존 OAuth/OIDC bearer 토큰 |
-| 모델 사용 | 선택적인 공급자 중립 의미 메타데이터 보강 |
-| 로컬 콘솔 | 루프백 전용 소스 분석, 작업·연결 검토, descriptor 내보내기 |
-| 미지원 | 원격·다중 사용자 콘솔, OAuth 생명주기, multipart, streaming, native gRPC, WebSocket, 임의 SDK·코드 실행, 게시자 증명 |
+| 영역      | 현재 지원                                                                                                            |
+| --------- | -------------------------------------------------------------------------------------------------------------------- |
+| API 소스  | OpenAPI 3.x, 선언형 HiMCP HTTP 매니페스트                                                                            |
+| 실행      | 검증된 요청·응답 계약을 가진, 검토된 HTTP(S) 작업                                                                    |
+| MCP 전송  | 로컬 stdio                                                                                                           |
+| 자격 증명 | 환경 변수 기반 API 키, Basic/Bearer 정보, 기존 OAuth/OIDC bearer 토큰                                                |
+| 모델 사용 | 선택적인 공급자 중립 의미 메타데이터 보강                                                                            |
+| 로컬 콘솔 | 루프백 전용 소스 분석, 작업·연결 검토, descriptor 내보내기                                                           |
+| 미지원    | 원격·다중 사용자 콘솔, OAuth 생명주기, multipart, streaming, native gRPC, WebSocket, 임의 SDK·코드 실행, 게시자 증명 |
 
 HTTP 매니페스트는 REST 호출, HTTP 기반 GraphQL, 명시적 SOAP/XML 요청, form·JSON 본문, 텍스트, 정규 base64 요청 바이트를 표현할 수 있습니다. 지원하지 않는 전송을 임의 코드로 우회하지 않고 거부합니다.
 
