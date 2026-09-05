@@ -26,7 +26,7 @@
   "dependencies": {
     "@hi-mcp/capability-ir": "workspace:*",
     "@hi-mcp/source-adapter-core": "workspace:*",
-    "zod": "^4.4.3"
+    "zod": "^4.5.4"
   },
   "devDependencies": {
     "@types/node": "^26.1.1",
