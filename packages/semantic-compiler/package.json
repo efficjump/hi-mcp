@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@hi-mcp/capability-ir": "workspace:*",
-    "zod": "^4.1.12"
+    "zod": "^4.5.4"
   },
   "devDependencies": {
     "@hi-mcp/deterministic-verifier": "workspace:*",

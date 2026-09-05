@@ -24,7 +24,7 @@
     "clean": "rm -rf dist coverage"
   },
   "dependencies": {
-    "zod": "^4.1.11"
+    "zod": "^4.5.4"
   },
   "devDependencies": {
     "@types/node": "^26.1.1",
